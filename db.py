@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker, relationship, Session as SessionT
 from contextlib import contextmanager
 from typing import Optional, List, Union, Callable, Coroutine
 from inspect import iscoroutinefunction
+from consts import ECHO_SQL
 
 SessionT = SessionT
 
@@ -17,7 +18,7 @@ meta = MetaData()
 Result = sqlalchemy.engine.ResultProxy
 Base = declarative_base(metadata=meta)
 
-engine = create_engine('sqlite:///challenges.db', echo=True)
+engine = create_engine('sqlite:///challenges.db', echo=ECHO_SQL)
 Session: sessionmaker = sessionmaker()
 Session.configure(bind=engine)
 
