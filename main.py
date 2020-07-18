@@ -1,3 +1,4 @@
+#! ./venv/bin/python3
 import discord
 from discord.ext.commands import Bot, Context
 from discord.ext.tasks import loop, Loop

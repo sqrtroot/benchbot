@@ -65,7 +65,7 @@ class Contender(Base):
 
 class Challenge(Base):
     __tablename__  = 'challenge'
-    __table_args__ = (UniqueConstraint("name", "active"))
+    __table_args__ = (UniqueConstraint("name", "active"),)
     id             = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     name           = Column(String, nullable=False)
     active         = Column(Boolean, nullable=False)
