@@ -4,7 +4,7 @@ from sqlalchemy_aio import ASYNCIO_STRATEGY
 from typing import Optional
 import asyncio
 
-engine = create_engine('sqlite:///challanges.db', echo=True, strategy=ASYNCIO_STRATEGY)
+engine = create_engine('sqlite:///challenges.db', echo=True, strategy=ASYNCIO_STRATEGY)
 meta = MetaData()
 
 Result = sqlalchemy.engine.ResultProxy

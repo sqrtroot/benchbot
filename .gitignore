@@ -1,5 +1,9 @@
 # Tokens etc:
 consts.py
+challenges.db
+
+# venv
+venv/
 
 # Python junk:
 __pycache__/
