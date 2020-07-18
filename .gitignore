@@ -1,0 +1,7 @@
+# Tokens etc:
+consts.py
+
+# Python junk:
+__pycache__/
+*.py[cod]
+*$py.class
