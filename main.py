@@ -89,7 +89,7 @@ async def benchmark(session: SessionT, ctx: Context):
     session.add(bench)
     session.flush()
 
-    filename = f'{BINARY_DIR}/{bench.id}'
+    filename = f'{BINARY_DIR}/{challenge.name}-{bench.id}'
     with open(filename, 'wb') as f:
         f.write(data)
 
