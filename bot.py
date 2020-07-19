@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext.commands import Bot, Context
 from discord.ext.tasks import loop, Loop
@@ -8,6 +7,7 @@ import psutil
 import re
 from tabulate import tabulate
 from hashlib import md5
+
 EMPTY_CHAR = '﻿'
 
 bot = Bot(command_prefix=">")
@@ -88,6 +88,7 @@ async def benchmark(session: SessionT, ctx: Context):
     filename = f'{BINARY_DIR}/{challenge.name}-{bench.id}'
     with open(filename, 'wb') as f:
         f.write(data)
+    await ctx.send(f"Thank you {ctx.author.mention}, you'll soon be notified of the results")
 
 
 @bot.command()
@@ -108,3 +109,15 @@ async def on_message(message: discord.Message):
         if len(code.group(1)) > 50:
             print("long code found")
             pass
+
+
+def notify_bench_done(user_id, challenge_name, bench_report):
+    if bot.is_closed():
+        return
+
+    async def notify():
+        user: discord.User = await bot.fetch_user(user_id)
+        await user.send(f"Your benchmark for {challenge_name} is done")
+        await user.send(f"{EMPTY_CHAR}\nYour results are:\n```{bench_report}```")
+
+    bot.loop.create_task(notify())

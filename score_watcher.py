@@ -4,6 +4,7 @@ from consts import SCORE_DIRECTORY
 from db import *
 import json
 import os
+from bot import notify_bench_done
 
 if os.name != 'nt':
     import inotify.adapters
@@ -26,7 +27,9 @@ class FileWatcher(Thread):
             os.remove(result_file)
             return
         if bench.error or bench.avg_time:
-            print(f"This file was already processed NANI")
+            print(f"This benchmark was already processed NANI")
+            os.remove(result_file)
+            return
         with open(result_file, 'r') as f:
             try:
                 out = json.load(f)
@@ -39,6 +42,8 @@ class FileWatcher(Thread):
             bench.avg_time = out.get('avg')
             bench.min_time = out.get('min')
             bench.max_time = out.get('max')
+        print(bench.result_format())
+        notify_bench_done(bench.contender_id, bench.challenge.name, bench.result_format())
         os.remove(result_file)
 
     def run_linux(self):

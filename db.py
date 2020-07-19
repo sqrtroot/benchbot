@@ -92,7 +92,7 @@ class Benchmark(Base):
     bin_size  = Column(Float)
 
     def result_format(self):
-        if not self.error or not self.avg_time:
+        if not self.error and not self.avg_time:
             return "Waiting for results"
         if self.error:
             rslt = [['error', self.error]]
@@ -104,9 +104,10 @@ class Benchmark(Base):
             ]
         return tabulate([
             ['Submitted by', self.contender.name],
+            ['Challenge', self.challenge.name],
             ['hash', self.hash],
             ['binary_size', self.bin_size],
-            *rslt])
+            *rslt], tablefmt='fancy_grid')
 
 
 connection: Optional[sqlalchemy.engine.Connection] = None
