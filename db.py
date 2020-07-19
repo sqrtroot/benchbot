@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, Session as SessionT
 from contextlib import contextmanager
 from typing import Optional, List, Union, Callable, Coroutine
-from inspect import iscoroutinefunction
+from inspect import iscoroutine
 from consts import ECHO_SQL
 
 SessionT = SessionT
@@ -48,13 +48,13 @@ def with_session(fn: Union[Callable, Coroutine]):
         finally:
             print('closing session')
             session.close()
-
-    if not iscoroutinefunction(fn):
-        sess_func.__name__ = fn.__name__
-        return sess_func
+    
+    if not iscoroutine(fn):
+        retfunc = sess_func
     else:
-        async_sess_func.__name__ = fn.__name__
-        return async_sess_func
+        retfunc = async_sess_func
+    retfunc.__name__ = getattr(fn, '__name__', retfunc.__name__)
+    return retfunc
 
 
 class Contender(Base):
