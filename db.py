@@ -26,7 +26,6 @@ Session.configure(bind=engine)
 def with_session(fn: Union[Callable, Coroutine]):
     def sess_func(*args, **kwargs):
         session: SessionT = Session()
-        print("Hey")
         try:
             fn(session, *args, **kwargs)
             session.commit()
