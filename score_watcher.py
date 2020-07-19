@@ -16,14 +16,13 @@ class FileWatcher(Thread):
     def new_result(session: SessionT, result_file):
         print(f"Processing {result_file}")
         try:
-            bench_name, bench_id = result_file.split('-')
+            _, bench_id = result_file.split('-')
             bench_id = int(os.path.basename(bench_id))
         except ValueError:
             print("File naming convention is wrong")
             os.remove(result_file)
             return
-        bench: Benchmark = session.query(Benchmark).filter(Benchmark.id == bench_id,
-                                                           Benchmark.challenge.name == bench_name).first()
+        bench: Benchmark = session.query(Benchmark).filter(Benchmark.id == bench_id).first()
         if not bench:
             print(f"Non valid benchmark found for file {result_file}")
             os.remove(result_file)
