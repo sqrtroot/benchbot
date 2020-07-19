@@ -47,6 +47,8 @@ class FileWatcher(Thread):
         os.remove(result_file)
 
     def run_linux(self):
+        for file in os.listdir(SCORE_DIRECTORY):
+            self.new_result(result_file=f"{SCORE_DIRECTORY}/{file}")
         i = inotify.adapters.Inotify()
         i.add_watch(SCORE_DIRECTORY)
         while event := i.event_gen(yield_nones=False):
