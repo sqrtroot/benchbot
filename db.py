@@ -37,7 +37,6 @@ def with_session(fn: Union[Callable, Coroutine]):
 
     async def async_sess_func(*args, **kwargs):
         session: SessionT = Session()
-        print("Hey")
         try:
             await fn(session, *args, **kwargs)
             session.commit()
