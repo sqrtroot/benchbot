@@ -52,7 +52,7 @@ class FileWatcher(Thread):
             self.new_result(result_file=f"{SCORE_DIRECTORY}/{file}")
         i = inotify.adapters.Inotify()
         i.add_watch(SCORE_DIRECTORY)
-        while event := i.event_gen(yield_nones=False):
+        for event in i.event_gen(yield_nones=False):
             (_, type_names, path, filename) = event
             if 'IN_CLOSE_WRITE' in type_names:
                 self.new_result(result_file=f"{SCORE_DIRECTORY}/{filename}")
