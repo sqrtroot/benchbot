@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, Session as SessionT
 from contextlib import contextmanager
 from typing import Optional, List, Union, Callable, Coroutine
-from inspect import iscoroutinefunction
+from inspect import iscoroutinefunction, signature
 from consts import ECHO_SQL
 
 SessionT = SessionT
@@ -51,7 +51,11 @@ def with_session(fn: Union[Callable, Coroutine]):
         retfunc = sess_func
     else:
         retfunc = async_sess_func
+    # keep original name and signature (for discord bot)
     retfunc.__name__ = getattr(fn, '__name__', retfunc.__name__)
+    sig = signature(fn)
+    sig = sig.replace(parameters=tuple(sig.parameters.values())[1:])
+    retfunc.__signature__ = sig
     return retfunc
 
 

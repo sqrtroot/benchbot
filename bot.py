@@ -7,6 +7,7 @@ import psutil
 import re
 from tabulate import tabulate
 from hashlib import md5
+from typing import Optional
 
 EMPTY_CHAR = '﻿'
 
@@ -41,7 +42,7 @@ async def start(session: SessionT, ctx: Context):
 
 @bot.command(aliases=['bench', 'b'])
 @with_session
-async def benchmark(session: SessionT, ctx: Context):
+async def benchmark(session: SessionT, ctx: Context, bench_name: Optional[str] = None):
     if not ctx.message.attachments:
         await ctx.send(f"{ctx.author.mention} Try attaching a binary!")
         return
@@ -61,7 +62,7 @@ async def benchmark(session: SessionT, ctx: Context):
         )
         return
 
-    challenge = get_challenge(session, attachment.filename)
+    challenge = get_challenge(session, bench_name or attachment.filename)
     if not challenge:
         await ctx.send(
             f"{ctx.author.mention} I haven't heard about that challenge. Maybe check the active challenges"
